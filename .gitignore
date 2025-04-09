@@ -6,10 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-<<<<<<< HEAD
-./Azurite
-./venv
-=======
 Azurite
 venv
 *.mov
@@ -23,7 +19,6 @@ venv
 *.pt
 .DS_Store
 
->>>>>>> eedb0a7 (inital version)
 # Distribution / packaging
 .Python
 build/
