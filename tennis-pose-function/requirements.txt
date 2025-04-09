@@ -1,0 +1,12 @@
+# Do not include azure-functions-worker in this file
+# The Python Worker is managed by the Azure Functions platform
+# Manually managing azure-functions-worker may cause unexpected issues
+
+azure-functions
+
+ultralytics>=8.0.0 # Or latest version
+opencv-python>=4.8.0 # Or latest version
+azure-storage-blob>=12.14.0 # For potential direct interaction, good practice
+numpy # Often a dependency, good to list explicitly
+# torch, torchvision, torchaudio are needed but installed manually above
+# Do NOT add torch/torchvision here if you installed manually for MPS

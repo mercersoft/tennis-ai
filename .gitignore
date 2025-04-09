@@ -6,8 +6,24 @@ __pycache__/
 # C extensions
 *.so
 
+<<<<<<< HEAD
 ./Azurite
 ./venv
+=======
+Azurite
+venv
+*.mov
+*.mp4
+*.avi
+*.mkv
+*.flv
+*.wmv
+*.webm
+
+*.pt
+.DS_Store
+
+>>>>>>> eedb0a7 (inital version)
 # Distribution / packaging
 .Python
 build/
