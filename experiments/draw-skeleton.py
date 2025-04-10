@@ -102,7 +102,7 @@ def process_video(input_file: str, output_dir: str) -> str:
     # Extract the file basename and extension
     basename = os.path.basename(input_file)
     name, ext = os.path.splitext(basename)
-    output_file = os.path.join(output_dir, f"{name}-skeleton{ext}")
+    output_file = os.path.join(output_dir, f"{name}-skeleton-racket{ext}")
 
     logging.info(f"Input file: {input_file}")
     logging.info(f"Output file: {output_file}")
