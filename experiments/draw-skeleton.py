@@ -4,6 +4,8 @@ from ultralytics import YOLO # YOLOv8
 import numpy as np
 import os
 import argparse
+import json
+from typing import List, Dict, Any
 
 # --- Configuration ---
 POSE_MODEL_NAME = 'yolov8s-pose.pt'
@@ -84,10 +86,96 @@ def draw_racket(frame, detections, color, threshold):
     
     return frame
 
+def extract_skeleton_keypoints(keypoints) -> List[Dict[str, Any]]:
+    """Extract skeleton keypoints from YOLO results and convert to JSON-serializable format."""
+    keypoints_data = keypoints.data.cpu().numpy()
+    frame_keypoints = []
+    
+    for person_kpts in keypoints_data:
+        person_keypoints = []
+        for i, kpt in enumerate(person_kpts):
+            x, y, conf = kpt
+            if conf >= CONFIDENCE_THRESHOLD:
+                person_keypoints.append({
+                    "keypoint_id": i,
+                    "x": float(x),
+                    "y": float(y),
+                    "confidence": float(conf)
+                })
+        if person_keypoints:  # Only add if we found valid keypoints
+            frame_keypoints.append(person_keypoints)
+    
+    return frame_keypoints
+
+def extract_racket_keypoints(detections) -> List[Dict[str, Any]]:
+    """Extract tennis racket keypoints from YOLO results and convert to JSON-serializable format."""
+    frame_rackets = []
+    
+    for detection in detections:
+        class_name = detection.names[int(detection.boxes.cls[0])]
+        confidence = float(detection.boxes.conf[0])
+        
+        if class_name.lower() == "tennis racket" and confidence >= RACKET_CONFIDENCE_THRESHOLD:
+            racket_data = {
+                "confidence": confidence,
+                "bbox": detection.boxes.xyxy[0].cpu().numpy().tolist(),
+                "keypoints": []
+            }
+            
+            if hasattr(detection, 'keypoints') and detection.keypoints is not None:
+                keypoints = detection.keypoints.data.cpu().numpy()[0]
+                for kp in keypoints:
+                    x, y, conf = kp
+                    if conf >= RACKET_CONFIDENCE_THRESHOLD:
+                        racket_data["keypoints"].append({
+                            "x": float(x),
+                            "y": float(y),
+                            "confidence": float(conf)
+                        })
+            
+            frame_rackets.append(racket_data)
+    
+    return frame_rackets
+
+def extract_keypoints_for_avatar(keypoints) -> List[Dict[str, Any]]:
+    """
+    Extract keypoints from YOLO results and convert to the format expected by Avatar.tsx.
+    
+    Avatar.tsx expects:
+    {
+      "frames": [
+        {
+          "keypoints": [
+            { "x": 123.45, "y": 67.89, "confidence": 0.95 },
+            ...
+          ]
+        },
+        ...
+      ]
+    }
+    """
+    keypoints_data = keypoints.data.cpu().numpy()
+    avatar_keypoints = []
+    
+    # We'll use the first person detected in each frame
+    if len(keypoints_data) > 0:
+        person_kpts = keypoints_data[0]  # Take the first person
+        for i, kpt in enumerate(person_kpts):
+            x, y, conf = kpt
+            if conf >= CONFIDENCE_THRESHOLD:
+                avatar_keypoints.append({
+                    "x": float(x),
+                    "y": float(y),
+                    "confidence": float(conf)
+                })
+    
+    return avatar_keypoints
+
 def process_video(input_file: str, output_dir: str) -> str:
     """
     Process a video file with YOLO v8 pose detection and overlay keypoints.
-    The output video filename is constructed as {input_name}-skeleton{extension}.
+    The output video filename is constructed as {input_name}-skeleton-racket{extension}.
+    Also saves keypoints to JSON files: {name}-skeleton.json, {name}-racket.json, and {name}-avatar.json
     
     Args:
         input_file (str): Path to the input video file.
@@ -103,9 +191,20 @@ def process_video(input_file: str, output_dir: str) -> str:
     basename = os.path.basename(input_file)
     name, ext = os.path.splitext(basename)
     output_file = os.path.join(output_dir, f"{name}-skeleton-racket{ext}")
+    skeleton_json = os.path.join(output_dir, f"{name}-skeleton.json")
+    racket_json = os.path.join(output_dir, f"{name}-racket.json")
+    avatar_json = os.path.join(output_dir, f"{name}-avatar.json")
 
     logging.info(f"Input file: {input_file}")
-    logging.info(f"Output file: {output_file}")
+    logging.info(f"Output video: {output_file}")
+    logging.info(f"Output skeleton JSON: {skeleton_json}")
+    logging.info(f"Output racket JSON: {racket_json}")
+    logging.info(f"Output avatar JSON: {avatar_json}")
+
+    # Initialize lists to store all frame keypoints
+    all_skeleton_keypoints = []
+    all_racket_keypoints = []
+    all_avatar_keypoints = []  # New list for Avatar.tsx format
 
     # Open the input video
     cap = cv2.VideoCapture(input_file)
@@ -157,13 +256,31 @@ def process_video(input_file: str, output_dir: str) -> str:
         # Run YOLO v8 object detection on the frame
         object_results = object_model(frame)[0]
         
-        # If keypoints are detected, overlay them
+        # Extract and store keypoints
         if hasattr(pose_results, "keypoints"):
+            # Original format for skeleton visualization
+            frame_skeleton_keypoints = extract_skeleton_keypoints(pose_results.keypoints)
+            all_skeleton_keypoints.append({
+                "frame": frame_count,
+                "keypoints": frame_skeleton_keypoints
+            })
+            
+            # New format for Avatar.tsx
+            frame_avatar_keypoints = extract_keypoints_for_avatar(pose_results.keypoints)
+            all_avatar_keypoints.append({
+                "keypoints": frame_avatar_keypoints
+            })
+            
             frame = draw_skeleton(frame, pose_results.keypoints, SKELETON_CONNECTIONS, 
                                 KEYPOINT_COLOR, SKELETON_COLOR, CONFIDENCE_THRESHOLD, 
                                 frame.shape[:2])
         
-        # Draw tennis rackets
+        # Extract and store racket keypoints
+        frame_racket_keypoints = extract_racket_keypoints(object_results)
+        all_racket_keypoints.append({
+            "frame": frame_count,
+            "rackets": frame_racket_keypoints
+        })
         frame = draw_racket(frame, object_results, RACKET_COLOR, RACKET_CONFIDENCE_THRESHOLD)
         
         # Write the processed frame to the output video
@@ -172,10 +289,21 @@ def process_video(input_file: str, output_dir: str) -> str:
         if frame_count % 100 == 0: # Log progress periodically
             logging.info(f"Processed {frame_count} frames...")
     
+    # Save keypoints to JSON files
+    with open(skeleton_json, 'w') as f:
+        json.dump(all_skeleton_keypoints, f, indent=2)
+    with open(racket_json, 'w') as f:
+        json.dump(all_racket_keypoints, f, indent=2)
+    
+    # Save keypoints in Avatar.tsx format
+    with open(avatar_json, 'w') as f:
+        json.dump({"frames": all_avatar_keypoints}, f, indent=2)
+    
     # Cleanup
     cap.release()
     out.release()
     logging.info(f"Video processing complete. Total frames processed: {frame_count}")
+    logging.info(f"Keypoints saved to {skeleton_json}, {racket_json}, and {avatar_json}")
     
     return output_file
 
