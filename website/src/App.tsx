@@ -13,6 +13,7 @@ const App: React.FC = () => {
         3D Avatar - Default Pose
       </h1>
       <Canvas camera={{ position: [0.75, 1.15, 7], fov: 40 }}>
+        <color attach="background" args={['#1a1a2e']} />
         <ambientLight intensity={0.8} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
         <Avatar keypointsData={keypointsData} />
