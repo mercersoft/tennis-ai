@@ -8,6 +8,7 @@ __pycache__/
 
 Azurite
 venv
+mediapipe_env
 *.mov
 *.mp4
 *.avi
