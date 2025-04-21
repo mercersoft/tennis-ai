@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <h1 style={{ position: 'absolute', zIndex: 1, color: '#fff' }}>
-        3D Avatar - Default Pose
+        3D Avatar - Tennis Serve
       </h1>
       <Canvas camera={{ position: [0.75, 1.15, 7], fov: 40 }}>
         <color attach="background" args={['#1a1a2e']} />
