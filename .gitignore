@@ -20,6 +20,8 @@ mediapipe_env
 *.pt
 .DS_Store
 
+*.mbtree
+
 # Distribution / packaging
 .Python
 build/
