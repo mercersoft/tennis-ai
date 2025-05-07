@@ -1,0 +1,547 @@
+{
+  "Name": "Cookie Treats Inc.",
+  "Description": "This is a sample cookie manufacturing model.",
+  "Id": "88888888-8888-1888-2888-888888888888",
+  "Resources": [
+    {
+      "Name": "Wheat Flour",
+      "Description": "unbleached organic whole grain flour, milled from hard white wheat",
+      "Index": 0,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 0.75, "IsCostFunction": true }
+    },
+    {
+      "Name": "Sugar",
+      "Description": "Soft dark brown sugar",
+      "Index": 1,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 0.45, "IsCostFunction": true }
+    },
+    {
+      "Name": "Milk",
+      "Description": "Whole milk",
+      "Index": 2,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 0.0492188, "IsCostFunction": true }
+    },
+    {
+      "Name": "Butter",
+      "Description": "Regular butter",
+      "Index": 3,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 1.95, "IsCostFunction": true }
+    },
+    {
+      "Name": "Chocolate",
+      "Description": "dark chocolate from Venzuela, 73% cacao content",
+      "Index": 4,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 10.35, "IsCostFunction": true }
+    },
+    {
+      "Name": "Almonds",
+      "Description": "Sweet allmond splitters",
+      "Index": 5,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 2.1, "IsCostFunction": true }
+    },
+    {
+      "Name": "Food Processor",
+      "Description": "Varimixer Model W60",
+      "Index": 6,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 0.0160902, "IsCostFunction": true }
+    },
+    {
+      "Name": "Oven",
+      "Description": "VECTAIRE Electric Convection Oven form Montague, model 2EK15A",
+      "Index": 7,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 0.0241087, "IsCostFunction": true }
+    },
+    {
+      "Name": "Bags",
+      "Description": "printed 1lb bags",
+      "Index": 8,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 0.06, "IsCostFunction": true }
+    },
+    {
+      "Name": "Labor",
+      "Description": "one hour of standard labor",
+      "Index": 9,
+      "CostFunction": { "FunctionType": "Variable", "VariablePart": 0.25, "IsCostFunction": true }
+    }
+  ],
+  "Products": [
+    {
+      "Name": "Regular Cookie Dough",
+      "Description": "regular dough with higher content of fat",
+      "Index": 10,
+      "IsFinal": false
+    },
+    {
+      "Name": "Light Cookie Dough",
+      "Description": "low fat cookie dough",
+      "Index": 11,
+      "IsFinal": false
+    },
+    {
+      "Name": "Mixing Process",
+      "Description": "includes mixing of ingredients with food processor in batches of 60 lbs.",
+      "Index": 12,
+      "IsFinal": false
+    },
+    {
+      "Name": "Baking Process",
+      "Description": "includes baking of cookies in oven in batches of 50 lbs.",
+      "Index": 13,
+      "IsFinal": false
+    },
+    {
+      "Name": "Packaging",
+      "Description": "includes packing and sealing cookies in bags of 1 lb.",
+      "Index": 14,
+      "IsFinal": false
+    },
+    {
+      "Name": "Regular Plain Cookies",
+      "Description": "Regular cookie",
+      "Index": 15,
+      "IsFinal": true
+    },
+    {
+      "Name": "Light Plain Cookies",
+      "Description": "Regular low fat cookie",
+      "Index": 16,
+      "IsFinal": true
+    },
+    {
+      "Name": "Regular Chocolate Chip Cookies",
+      "Description": "Regular cookie with dark chocolate chunks",
+      "Index": 17,
+      "IsFinal": true
+    },
+    {
+      "Name": "Light Chocolate Chip Cookies",
+      "Description": "Low fat cookie with dark chocolate chunks",
+      "Index": 18,
+      "IsFinal": true
+    },
+    {
+      "Name": "Regular Almond Chip Cookies",
+      "Description": "Regular cookie with roasted almond",
+      "Index": 19,
+      "IsFinal": true
+    },
+    {
+      "Name": "Light Almond Chip Cookies",
+      "Description": "Low fat cookie with roasted almond",
+      "Index": 20,
+      "IsFinal": true
+    },
+    {
+      "Name": "Baking and Wrapping Service",
+      "Description": "Service for wholesale customers (includes baking and packing cookies, customer provides cookie dough)",
+      "Index": 21,
+      "IsFinal": true
+    },
+    {
+      "Name": "Whole Cookie Service",
+      "Description": "Service for wholesale customers (includes mixing ingredients, baking and packing, customer provides raw ingredients)",
+      "Index": 22,
+      "IsFinal": true
+    },
+    {
+      "Name": "GLF Brownie",
+      "Description": "",
+      "Index": 23,
+      "IsFinal": true
+    }
+  ],
+  "Processes": [
+    {
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "Name": "Building Blocks",
+      "Description": "Intermediate products of Cookie Treats Inc which either can be used in subsequent processing statges or sold as wholesale products",
+      "Index": 0,
+      "IsDefault": true,
+      "InputIds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "OutputIds": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        23
+      ],
+      "ProductionMatrix": [
+        {
+          "Input": 0,
+          "Output": 10,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.5 }
+        },
+        {
+          "Input": 1,
+          "Output": 10,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.1 }
+        },
+        {
+          "Input": 2,
+          "Output": 10,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 3,
+          "Output": 10,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.2 }
+        },
+        {
+          "Input": 9,
+          "Output": 10,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.2 }
+        },
+        {
+          "Input": 6,
+          "Output": 10,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.2 }
+        },
+        {
+          "Input": 0,
+          "Output": 11,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.5 }
+        },
+        {
+          "Input": 1,
+          "Output": 11,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.05 }
+        },
+        {
+          "Input": 2,
+          "Output": 11,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1.5 }
+        },
+        {
+          "Input": 3,
+          "Output": 11,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.1 }
+        },
+        {
+          "Input": 6,
+          "Output": 11,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.2 }
+        },
+        {
+          "Input": 9,
+          "Output": 11,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.2 }
+        },
+        {
+          "Input": 6,
+          "Output": 12,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 10 }
+        },
+        {
+          "Input": 9,
+          "Output": 12,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 10 }
+        },
+        {
+          "Input": 7,
+          "Output": 13,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 40 }
+        },
+        {
+          "Input": 9,
+          "Output": 13,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 20 }
+        },
+        {
+          "Input": 8,
+          "Output": 14,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 9,
+          "Output": 14,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.33 }
+        }
+      ]
+    },
+    {
+      "Id": "00000000-0000-0000-0000-000000000000",
+      "Name": "Products",
+      "Description": "Retail products and wholesale services of Cookie Treats Inc",
+      "Index": 1,
+      "IsDefault": false,
+      "InputIds": [
+        4,
+        5,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "OutputIds": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "ProductionMatrix": [
+        {
+          "Input": 10,
+          "Output": 15,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1.1 }
+        },
+        {
+          "Input": 13,
+          "Output": 15,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.02 }
+        },
+        {
+          "Input": 14,
+          "Output": 15,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 11,
+          "Output": 16,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1.1 }
+        },
+        {
+          "Input": 13,
+          "Output": 16,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.02 }
+        },
+        {
+          "Input": 14,
+          "Output": 16,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 4,
+          "Output": 17,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.1 }
+        },
+        {
+          "Input": 10,
+          "Output": 17,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 13,
+          "Output": 17,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.02 }
+        },
+        {
+          "Input": 14,
+          "Output": 17,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 4,
+          "Output": 18,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.1 }
+        },
+        {
+          "Input": 11,
+          "Output": 18,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 13,
+          "Output": 18,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.02 }
+        },
+        {
+          "Input": 14,
+          "Output": 18,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 5,
+          "Output": 19,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.2 }
+        },
+        {
+          "Input": 10,
+          "Output": 19,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.9 }
+        },
+        {
+          "Input": 13,
+          "Output": 19,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.02 }
+        },
+        {
+          "Input": 14,
+          "Output": 19,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 5,
+          "Output": 20,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.2 }
+        },
+        {
+          "Input": 11,
+          "Output": 20,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.9 }
+        },
+        {
+          "Input": 13,
+          "Output": 20,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.02 }
+        },
+        {
+          "Input": 14,
+          "Output": 20,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 13,
+          "Output": 21,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.02 }
+        },
+        {
+          "Input": 14,
+          "Output": 21,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        },
+        {
+          "Input": 12,
+          "Output": 22,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.016 }
+        },
+        {
+          "Input": 13,
+          "Output": 22,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 0.02 }
+        },
+        {
+          "Input": 14,
+          "Output": 22,
+          "Formula": { "FunctionType": "Variable", "VariablePart": 1 }
+        }
+      ]
+    }
+  ],
+  "Scenarios": [
+    {
+      "Name": "Simulation 0",
+      "Description": "enhanced simulation",
+      "Index": 0,
+      "LastModified": "634605204164380000",
+      "IsActive": true,
+      "FinalProducts": [
+        {
+          "Index": 15,
+          "Demand": 144000,
+          "Price": 2
+        },
+        {
+          "Index": 16,
+          "Demand": 90000,
+          "Price": 0
+        },
+        {
+          "Index": 17,
+          "Demand": 252000,
+          "Price": 0
+        },
+        {
+          "Index": 18,
+          "Demand": 180000,
+          "Price": 0
+        },
+        {
+          "Index": 19,
+          "Demand": 168000,
+          "Price": 0
+        },
+        {
+          "Index": 20,
+          "Demand": 141600,
+          "Price": 0
+        },
+        {
+          "Index": 21,
+          "Demand": 60000,
+          "Price": 0
+        },
+        {
+          "Index": 22,
+          "Demand": 120000,
+          "Price": 0
+        },
+        {
+          "Index": 23,
+          "Demand": 0,
+          "Price": 4
+        }
+      ]
+    },
+    {
+      "Name": "Simulation 1",
+      "Description": "base simulation",
+      "Index": 1,
+      "LastModified": "0001-01-01T07:52:58.000Z",
+      "IsActive": false,
+      "FinalProducts": [
+        {
+          "Index": 15,
+          "Demand": 11,
+          "Price": 0
+        },
+        {
+          "Index": 16,
+          "Demand": 22,
+          "Price": 0
+        },
+        {
+          "Index": 17,
+          "Demand": 0,
+          "Price": 0
+        },
+        {
+          "Index": 18,
+          "Demand": 0,
+          "Price": 0
+        },
+        {
+          "Index": 19,
+          "Demand": 0,
+          "Price": 0
+        },
+        {
+          "Index": 20,
+          "Demand": 0,
+          "Price": 0
+        },
+        {
+          "Index": 21,
+          "Demand": 0,
+          "Price": 0
+        },
+        {
+          "Index": 22,
+          "Demand": 0,
+          "Price": 0
+        },
+        {
+          "Index": 23,
+          "Demand": 0,
+          "Price": 0
+        }
+      ]
+    }
+  ]
+}

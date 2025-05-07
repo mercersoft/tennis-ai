@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- Navy blue background -->
+  <rect width="200" height="200" fill="transparent" stroke="orange" stoke-width="2" />
+
+  <!-- "Uui" text centered inside the square -->
+  <text x="45%" y="55%" font-family="Arial, sans-serif" font-size="100" fill="orange" letter-spacing="-23" dominant-baseline="middle" text-anchor="middle">
+    Uui
+  </text>
+</svg>
